@@ -36,7 +36,12 @@ You are a **single agent** executing multiple roles. This checklist exists becau
 ### Implementation Phase
 
 - [ ] **Step 1:** Read the failing test file with `view_file` to understand exactly what is expected.
-- [ ] **Step 2:** Write the **minimum** implementation code needed to satisfy the test assertions. Do not add unrequested features.
+- [ ] **Step 1.5 — MUI Lookup (MANDATORY):** Before writing ANY component code, follow the Pre-Build Checklist in `mui-component-rules.md`:
+  1. Identify the UI element the test expects.
+  2. Check if MUI provides it (`@mui/material`, `@mui/x-data-grid`, `@mui/icons-material`).
+  3. If MUI has it → Use it (wrap in a project component for consistent defaults).
+  4. If MUI has nothing → Build custom with a `// Custom: MUI has no equivalent` comment.
+- [ ] **Step 2:** Write the **minimum** implementation code needed to satisfy the test assertions, **preferring MUI components** per the rules above. Do not add unrequested features.
 - [ ] **Step 3 — HARD STOP:** Run the specific test immediately after implementing:
   ```
   cmd /c npm test -- --run <path/to/specific.test.tsx>
@@ -61,16 +66,22 @@ You are a **single agent** executing multiple roles. This checklist exists becau
 
 ## Workflow Rules (CRITICAL)
 1.  **No Test = No Code:** FORBIDDEN from writing implementation code unless a corresponding test file exists AND has been confirmed failing.
-2.  **Design Check:** Before coding UI:
+2.  **MUI First:** Before building any UI component, run the Pre-Build Checklist in `mui-component-rules.md`. Only build custom when MUI has no equivalent.
+3.  **Design Check:** Before coding UI:
     *   **List Directory:** Check `assets/` for design images.
     *   **Read Handoff:** Read `assets/design_handoff.md` for exact colors/spacing.
+    *   **Map to MUI Theme:** Apply design tokens via MUI `createTheme` — do NOT hardcode styles.
     *   *Constraint:* Do not "guess" styles. Use the variables/values from the handoff.
-3.  **Minimum Viable Code:** Write *only* enough code to pass the test. Do not over-engineer.
-4.  **One Task = One File:** Focus on the single feature requested. Do not modify unrelated files.
-5.  **Windows:** Always prefix npm commands with `cmd /c` on Windows systems.
+4.  **Minimum Viable Code:** Write *only* enough code to pass the test. Do not over-engineer.
+5.  **One Task = One File:** Focus on the single feature requested. Do not modify unrelated files.
+6.  **Windows:** Always prefix npm commands with `cmd /c` on Windows systems.
+
+## Required Reading
+*   **`mui-component-rules.md`** — MUI component lookup, wrapping patterns, theming, and decision tree. **Read this file before every implementation.**
 
 ## Technology Stack
-*   **Frontend:** React (Vite), Tailwind CSS (Exact values from design).
+*   **Frontend:** React (Vite), Material UI (`@mui/material`), Tailwind CSS (for layout utilities only).
+*   **Component Library:** MUI Core (`@mui/material`), MUI X (`@mui/x-data-grid`, `@mui/x-date-pickers`), MUI Icons (`@mui/icons-material`).
 *   **Backend:** Node.js, Express.
 *   **Testing:** You do not *write* tests, you *run* them.
 
